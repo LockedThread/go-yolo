@@ -1,5 +1,10 @@
 #include <darknet.h>
 #include "yolo.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include "option_list.h"
+#include "utils.h"
 
 
 void set_gpu(int gpu)
@@ -37,7 +42,7 @@ void image_detector(char *datacfg, char *cfgfile, char *weightfile, char *filena
         layer l = net->layers[net->n-1];
 
         box *boxes = calloc(l.w*l.h*l.n, sizeof(box));
-        float **probs = calloc(l.w*l.h*l.n, sizeof(float *));
+        int **probs = calloc(l.w*l.h*l.n, sizeof(float *));
         for(j = 0; j < l.w*l.h*l.n; ++j) probs[j] = calloc(l.classes + 1, sizeof(float *));
         float **masks = 0;
         if (l.coords > 4){
